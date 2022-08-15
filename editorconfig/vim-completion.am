@@ -1,0 +1,20 @@
+
+if HAVE_COMPILEDB
+
+@abs_top_srcdir@/compile_commands.json:
+	rm -f @abs_top_srcdir@/compile_commands.json
+	make clean
+	compiledb `basename ${MAKE}` -j 1 all
+	ln  @top_builddir@/compile_commands.json @abs_top_srcdir@
+
+phony_targets+= vim-completion
+
+vim-completion: @abs_top_srcdir@/compile_commands.json
+else
+vim-completion:
+	echo "compiledb not found; vim-completion disabled"
+endif
+
+# vim: sts=4 ts=4 noet ft=automake :
+
+
